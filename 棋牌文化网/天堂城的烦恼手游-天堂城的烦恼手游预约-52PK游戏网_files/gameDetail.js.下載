@@ -1,0 +1,272 @@
+jQuery(window).load(function() {
+	if ($('#hiddenDetail').find('.cont').height() < 660) {
+		$('#hiddenDetail').css('height', 'auto');
+    $('#openDetail').remove();
+    $(".detailC_l .game_intro .hiddenDetail .linear").remove();
+	};
+})
+$(function () {
+  // 类型数量判断
+  $(".detailCont_right .structure_a li .type span").each( function() {
+    let strLen = $(this).text();
+    if (strLen.length > 3 ) { 
+      $(this).parent().children("span:nth-child(3)").nextAll().hide();
+    }
+  });
+
+  // 游戏介绍内容溢出隐藏
+  $(".showImg").html($(".hideImg").html());
+  $(".showImg2").html($(".hideImg2").html());
+  $('#openDetail').on('click', function() { 
+    if ($('#openDetail').attr("flag") == 'fold') {
+      $('#hiddenDetail').css('height', 'auto');
+      $(this).html('收起内容<i class="icon up"></i>'); 
+      $('#openDetail>i').css("transform", "rotate(0deg)");
+      $('#openDetail').attr("flag", "open")
+      $(".detailC_l .game_intro .hiddenDetail .linear").addClass("hide")
+    } else {
+      $(this).html('展开内容<i class="icon"></i>');
+      $('#hiddenDetail').css('height', "660px");
+      $('#openDetail').attr("flag", "fold");
+      $(".detailC_l .game_intro .hiddenDetail .linear").removeClass("hide")
+    }
+  })
+  // banner
+  var galleryThumbs = new Swiper('.showImg .gallery-thumbs', {
+    spaceBetween: 6,
+    slidesPerView: 5,
+    freeMode: true,
+    watchSlidesVisibility: true,
+    watchSlidesProgress: true,
+  });
+  var galleryTop = new Swiper('.showImg .gallery-top', {
+    autoplay:true,
+    loop : true,
+    spaceBetween: 6,
+    navigation: {
+      nextEl: '.btnNext',
+      prevEl: '.btnPrev',
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'progressbar',
+    },
+    thumbs: {
+      swiper: galleryThumbs
+    }
+  });
+  // 弹窗
+  $(".detailC_l .detailC1_l .order").on("click", function() {
+    $(".orderList").removeClass("hide")
+  })
+  $(".orderList .orderBox .oClose").on("click", function() {
+    $(".orderList").addClass("hide")
+  })
+  $(".orderList .orderBox .oWin .oKnow").on("click", function() {
+    $(".orderList").addClass("hide")
+  })
+  $(".orderList .orderBox .oAgin .oKnow").on("click", function() {
+    $(".orderList").addClass("hide")
+  })
+
+  // 正则：判断手机号码
+  function isPoneAvailable(tel) {  
+      var myreg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+      if (!myreg.test(tel)) { 
+          return false;
+      } else {  
+          return true; 
+      }  
+  }
+  // 判断手机号是否正确
+  function telResult(telText){
+    var telText = $('.tel').val(),result = isPoneAvailable(telText);//判断手机是否正确
+    if(result===false){
+        $('.tel').css({'color':'#fe684d','border-color':'#fe684d'});
+        $('.msg').text("请填写正确的手机号")
+    $('.msg').css({'content':'"请填写正确的手机号"','color': '#fe684d','font-size':'14px','text-align': 'left','display': 'block','width':'322px','margin': '0 auto'});
+        return false;
+    }else{
+        $('.tel').css({'color':'#333','border-color':'#c2c2c2'});
+        $('.msg').text("")
+        return true;
+    }
+  }
+  
+  $(".oBtn").click(function () {
+      var telText = $('.tel').val();
+      let game_id = $("input[name='game_id']").val().trim();
+  
+      let game_name =$("input[name='game_name']").val().trim();
+  
+      let system =$("input[name='system_version']").val().trim();
+  
+      if (game_id == ''){
+          alert('游戏id不能为空');return false;
+      }
+  
+      telResult(telText);
+  
+      $.ajax({
+          url:"/downs/reservation",
+          type: 'post',
+          data:{
+              'phone':telText,
+              'game_id':game_id,
+              'game_name':game_name,
+              'system':system
+          },
+         success:function (res) {
+              let result =  JSON.parse(res); //由JSON字符串转换为JSON对象
+              if (result.code==0){
+                  $('.msg').text(result.msg)
+                  $('.msg').css({'content':'"+result.msg+"','color': '#fe684d','font-size':'14px','text-align': 'left','display': 'block','width':'322px','margin': '0 auto'});
+                  return false;
+              }else if(result.code== 200){
+                  //预约成功
+          $(".oOrder").hide();
+          $(".oWin").show();
+              }else if(result.code== 300){
+          //已预约
+          $(".oOrder").hide();
+                  $(".oAgin").show();
+  
+              }else if(result.code== 400){
+                  //预约失败
+          $(".oOrder").hide();
+                  $(".oLose").show();
+              }
+          }
+      })
+  })
+  $('body').delegate('.tel','blur',function(){
+      telResult();
+  });
+
+// 游戏详情页选项卡
+$(".similar_recommend .type_menu span").on("click", function (e) {
+  $(e.target).addClass("current").siblings().removeClass("current")
+  var index =  $(e.target).attr("index");
+  $(".similar_recommend .typeCont .type_common").eq(index).css("display", "block").siblings().css("display", "none")
+})
+// 点击到达下载按钮
+$(".detailC1_l .cont .down").on("click", function(){
+  var height = $(".down_address").offset().top;
+  $("html,body").animate({ scrollTop: height }, 2000);
+})
+})
+$(window).load(function() {
+  if ($('#hiddenDetail').find('.cont').height() < 660) {
+    $('#hiddenDetail').css('height', 'auto');
+    $('#openDetail').remove();
+  };
+})
+
+// 截图的点击切换
+function hscroll2(id, flag, min, move, childlevel, time) {
+  min = min || 2;
+  move = move || 1;
+  time = time || 300;
+  childlevel = childlevel || 1;
+  var parent = $("#" + id + ":not(:animated)");
+  if (childlevel == 1) {
+    var kids = parent.children();
+  } else {
+    var kids = parent.children().eq(0).children();
+  }
+
+  if (kids.length < min) return false;
+  var kid = kids.eq(0);
+  var kidWidth = kid.width() + parseInt(kid.css("paddingLeft")) + parseInt(kid.css("paddingRight")) + parseInt(kid.css(
+    "marginLeft")) + parseInt(kid.css("marginRight"));
+  var margin = (kidWidth * move);
+  if (flag == "left") {
+    var s = parent.scrollLeft() + margin;
+    parent.animate({
+      'scrollLeft': s
+    }, time);
+  } else {
+    var s = parent.scrollLeft() - margin;
+    parent.animate({
+      'scrollLeft': s
+    }, time);
+  }
+  return false;
+}
+
+
+
+
+// 反馈
+$(function () {
+	$(".feBaBtn").on('click', function () { $(".feedBack").show();});
+	$(".feBaClose").on('click', function (e) {
+	  let ev = e || window.event;
+	  if(ev && ev.stopPropagation){
+	    ev.stopPropagation(); 
+	  }else{
+	    ev.cancelBubble = true; 
+	  }
+	  $(".feedBack").hide();
+	});
+	$(".submit").click(function () {
+	    let game_id = $.trim($("input[name='game_id']").val());
+	    let game_name = $.trim($("input[name='game_name']").val());
+	    let type_info = $.trim($("input[name='type_info']").val());
+			
+	    let reason = "";
+	    $(".feBack input[name='checkbox[]']:checked").each(function (k, v) {
+	        reason += ',' + $(v).data('value')
+	    })
+			
+	    if (!reason) {
+	        alert('请选择反馈原因！');
+	        return;
+	    }
+		
+				
+	    let tel = $.trim($(".telBox input[name='tel']").val());
+	    if (!tel) {
+	        alert('请输入手机号码、QQ号码!');
+	        return;
+	    }
+
+	    //检查手机号码
+        let reg = /^1[3456789]\d{9}$/;
+
+	    if (!reg.test(tel)){
+            alert('请填写正确的手机号码');
+            return;
+        }
+
+			
+	    let remake = $.trim($(".feBack textarea[name='remake']").val());
+			
+			
+	    $.ajax({
+	        url: '/downs/feedback/',
+	        type: 'POST',
+	        data: {
+	            'game_id': game_id,
+	            'reason': reason,
+	            'tel': tel,
+	            'remake': remake,
+	            'type': 2,
+	            'game_name': game_name,
+	        },
+	        success: function (data) {
+	            res = $.parseJSON(data);
+	            if (res.code == 200) {
+	                alert('反馈成功,谢谢您！');
+	                $(".feedBack").hide();
+	            } else {
+	                alert(res.msg);
+	                return;
+	            }
+			
+	        }
+	    });
+	})																	
+																		
+});																	
+																	
