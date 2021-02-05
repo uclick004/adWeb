@@ -1,0 +1,73 @@
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1bb50e722c394304064bf1ce3aa578b6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2d90bc7da34c280b24e6f55465ed7392";//53pk
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+//forbidden
+if(document.all){
+    document.onselectstart= function(){return false;}; //for ie
+}else{
+    //document.onmousedown= function(){return false;};
+    document.onmouseup= function(){return true;};
+}
+document.onselectstart = new Function('event.returnValue=false;');
+$(function() {
+    document.onkeydown = function() {
+        var e = window.event || arguments[0];
+        if (e.keyCode == 123) {
+            return false
+        } else {
+            if ((e.ctrlKey) && (e.shiftKey) && (e.keyCode == 73)) {
+                return false
+            } else {
+                if ((e.shiftKey) && (e.keyCode == 121)) {
+                    return false
+                } else {
+                    if ((e.ctrlKey) && (e.keyCode == 85)) {
+                        return false
+                    }
+                }
+            }
+        }
+    };
+    
+    var Sys = {};
+    var ua = navigator.userAgent.toLowerCase();
+    if (window.ActiveXObject) {
+        document.body.oncopy = function() {
+            event.returnValue = false;
+            var t = document.selection.createRange().text;
+            var s = " 原文链接：" + location.href;
+            clipboardData.setData("Text", "\r\n" + s)
+        }
+    } else {
+        function addLink() {
+            var body_element = document.getElementsByTagName("body")[0];
+            var selection;
+            selection = window.getSelection();
+            var pagelink = " 原文链接：" + location.href;
+            var copytext = selection + pagelink;
+            var newdiv = document.createElement("div");
+            newdiv.style.position = "absolute";
+            newdiv.style.left = "-99999px";
+            body_element.appendChild(newdiv);
+            newdiv.innerHTML = pagelink;
+            selection.selectAllChildren(newdiv);
+            window.setTimeout(function() {
+                body_element.removeChild(newdiv)
+            },
+            0)
+        }
+        document.oncopy = addLink
+    }
+});

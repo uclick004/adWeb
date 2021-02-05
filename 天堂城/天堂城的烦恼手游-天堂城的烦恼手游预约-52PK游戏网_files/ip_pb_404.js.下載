@@ -1,0 +1,143 @@
+function keycodes(){
+  // 禁止右键
+  document.oncontextmenu=function(){return false};
+  document.onkeydown = function(e) {
+      e = window.event || e;
+      var k = e.keyCode;
+      //屏蔽ctrl+u，F12键
+      if ((e.ctrlKey == true && k == 85) || k == 123) {
+          e.keyCode = 0;
+          e.returnValue = false;
+          e.cancelBubble = true;
+          return false;
+      }
+  }
+}
+
+
+var pageTo404 = false;
+var pageTitle = $('title').eq(0).html();
+function page404(){
+  $('html').hide();
+  pageTo404 = true;
+  $(function(){
+    $('body').html('<div class="page_delete" style="width:641px;height:345px;margin:60px auto 0;"><img src="//www.52pk.com/public/img/404img.png"/><div>');
+    $('html').show();
+    $('body').css('background','#fff');
+  })
+  keycodes();
+}
+
+function page404m(){
+  $('html').hide();
+  pageTo404 = true;
+  $(function(){
+    $('body').html('<div class="page_delete" style="width:280px;height:236px;margin:50px auto 0;padding:0;background:url(\'https://image.diyiyou.com/m/img/404m.jpg\') no-repeat;background-size: auto;background-size: 100% 100%;"><div>');
+    $('html').show();
+    $('body').css('background','#f0f0f0');
+  })
+  keycodes();
+}
+
+    var tcid = Number(window.pageConfig.cid);
+    var uagent = navigator.userAgent;
+	var currurl = window.location.href;
+	var Cookie={get:function(name){var value='',matchs;if(matchs=document.cookie.match("(?:^| )"+name+"(?:(?:=([^;]*))|;|$)"))value=matchs[1]?unescape(matchs[1]):"";return value},set:function(name,value,expire,domain){expire=expire||30*24*3600*1000;var date=new Date(),cookie="";date.setTime(date.getTime()+expire);cookie=name+"="+escape(value)+";expires="+date.toGMTString()+";path=/;";domain&&(cookie+="domain="+domain+";");document.cookie=cookie},del:function(name,domain){Cookie.set(name,'',-1,domain)}};
+	var cityZshou   = ["北京市","深圳市","上海市"];//地区1 给助手用的
+	var appres	    = true;
+	var openurl		= document.referrer;
+	var andsystem   = uagent.indexOf("Android") > -1 || uagent.indexOf("Linux") > -1 ? true : false;
+	var istite = /\u68cb\u724c|\u6597\u5730\u4e3b|\u9ebb\u5c06|\u6251\u514b|\u91d1\u82b1|\u6355\u9c7c|\u63bc\u86cb|\u68ad\u54c8|\u6597\u725b|\u8bb0\u724c\u5668|\u62d6\u62c9\u673a|\u63a8\u5012\u80e1|\u900f\u89c6\u5668|\u6c34\u679c\u673a|\u8001\u864e\u673a|\u8d62\u4e09\u5f20|\u4e09\u5f20\u724c|AAA|\u8dd1\u80e1\u5b50|\u70b8\u7ffb\u5929|\u516d\u5408\u5f69|\u5f00\u5956|\u5f69\u7968|\u8d2d\u5f69|\u4f53\u5f69|\u798f\u5f69|\u53cc\u8272\u7403|\u8d37\u6b3e|\u5c0f\u8d37|\u53e3\u5b50|\u9ed1\u6237|\u7f51\u8d37|\u501f\u94b1|\u501f\u8d37|\u5c0f\u989d\u8d37|\u501f\u6b3e|\u968f\u501f\u968f\u8fd8|\u5f81\u4fe1|\u62b5\u62bc|\u62c5\u4fdd|\u624b\u673a\u8d37\u6b3e|\u4e0b\u6b3e\u53e3\u5b50|\u4e0b\u6b3e\u5feb|\u725B\u725B-|\u5A31\u4E50-|\u7EA2\u62D0\u5F2F-/.test(document.querySelector('meta[name="keywords"]').getAttribute('content')+document.title);
+
+			
+    if(/Android|webOS|iPhone|iPad|Windows Phone|iPod|BlackBerry|SymbianOS|Nokia|Mobile/i.test(navigator.userAgent)){//M
+		if(istite&&currurl.indexOf('/app/')!=-1){
+			console.log(navigator.userAgent);
+			page404m();
+		/***}else if(istite&&currurl.indexOf('/game/')!=-1){
+			page404m();**/
+		}else{
+		  $.get("https://pi.9k9k.com/location/get52pkcall/?ac=getposcall",{acd:'get'},function(d){
+			  console.log(d.recomdCity);
+			if (d.recomdCity) {
+				if(/\u963f\u62c9\u5fb7\u4e4b\u6012|\u68cb\u724c|\u6597\u5730\u4e3b|\u9ebb\u5c06|\u6251\u514b|\u91d1\u82b1|\u6355\u9c7c|\u63bc\u86cb|\u68ad\u54c8|\u6597\u725b|\u8bb0\u724c\u5668|\u62d6\u62c9\u673a|\u63a8\u5012\u80e1|\u900f\u89c6\u5668|\u6c34\u679c\u673a|\u8001\u864e\u673a|\u8d62\u4e09\u5f20|\u4e09\u5f20\u724c|AAA|\u8dd1\u80e1\u5b50|\u70b8\u7ffb\u5929|\u516d\u5408\u5f69|\u5f00\u5956|\u5f69\u7968|\u8d2d\u5f69|\u4f53\u5f69|\u798f\u5f69|\u53cc\u8272\u7403|\u8d37\u6b3e|\u5c0f\u8d37|\u53e3\u5b50|\u9ed1\u6237|\u7f51\u8d37|\u501f\u94b1|\u501f\u8d37|\u5c0f\u989d\u8d37|\u501f\u6b3e|\u968f\u501f\u968f\u8fd8|\u5f81\u4fe1|\u62b5\u62bc|\u62c5\u4fdd|\u624b\u673a\u8d37\u6b3e|\u4e0b\u6b3e\u53e3\u5b50|\u4e0b\u6b3e\u5feb|\u725B\u725B-|\u5A31\u4E50-|\u7EA2\u62D0\u5F2F-/.test(document.querySelector('meta[name="keywords"]').getAttribute('content')+document.title)||tcid==10){
+					/***$(".and_show").remove();
+					$(".ios_show").remove();
+					$(".yuyue_show").remove();
+					$(".no_down_show").show();
+					**/
+					page404m();
+					/**if (d.recomdCity && (uagent.indexOf("Baiduspider") == -1 && uagent.indexOf("Spider") == -1)) {
+						//$("title").html("\u0034\u0030\u0034\u9875\u9762\u4e0d\u5b58\u5728");
+						//window.stop;
+						//let domain = window.origin.replace('m.', 'www.');
+						//var html = '<input type="hidden" name="recomdCity" value="1"><div class="page_delete" style="width:641px;height:345px;margin:60px auto 0;"><img src="' + domain + '/public/img/404img.png"><div></div></div>';
+						//$("body").html(html);
+					}**/
+				}
+			}
+			var city	= d.location.province;
+			if(currurl.indexOf('/app/')!=-1){//appzhushou  openurl.indexOf('baidu') == -1 && 
+				if (andsystem && appres && openurl != '' && openurl.indexOf('52pk.com') == -1) {//不是本站和百度 openurl.indexOf('52pk.com') == -1 &&
+					if($.inArray(city, cityZshou) == -1){//不在区域内
+						function setCookie(zhushou){//记录cookie
+							var Days = 1;
+							var exp = new Date();
+							exp.setTime(exp.getTime() + Days*48*60*60*1000);
+							document.cookie = zhushou + "="+ "52pkvip" + ";expires=" + exp.toGMTString();
+						}
+						if (Cookie.get("zhushou") == "52pkvip"){ 
+						}else{
+						 var zhushouurl = 'https://openbox.mobilem.360.cn/channel/getUrl?src=8977538&app=zs'; var andown= $('.and_show a');
+						var righturl = andown.attr('href');
+						if (righturl != 'javascript:;') {//下载地址不为
+							andown.attr('date-ci','0' );//
+							andown.click(function(){
+								if (andown.attr('date-ci') == '0') {
+									andown.attr({'href':zhushouurl,'date-ci':'1'});			    			
+								}else{
+									andown.attr('href',righturl );//
+								}
+							})
+						}
+						setCookie("zhushou");
+					}//通过cookie处理结束
+				}//判断区域1结束
+			  }
+			}
+		},"jsonp");
+
+		}
+    }else{//PC
+			console.log(tcid);
+        if(/\u5b88\u62a4\u795e\u57df\u624b\u6e38|\u963f\u62c9\u5fb7\u4e4b\u6012|\u68cb\u724c|\u6597\u5730\u4e3b|\u9ebb\u5c06|\u6251\u514b|\u91d1\u82b1|\u6355\u9c7c|\u63bc\u86cb|\u68ad\u54c8|\u6597\u725b|\u8bb0\u724c\u5668|\u62d6\u62c9\u673a|\u63a8\u5012\u80e1|\u900f\u89c6\u5668|\u6c34\u679c\u673a|\u8001\u864e\u673a|\u8d62\u4e09\u5f20|\u4e09\u5f20\u724c|AAA|\u8dd1\u80e1\u5b50|\u70b8\u7ffb\u5929|\u516d\u5408\u5f69|\u5f00\u5956|\u5f69\u7968|\u8d2d\u5f69|\u4f53\u5f69|\u798f\u5f69|\u53cc\u8272\u7403|\u8d37\u6b3e|\u5c0f\u8d37|\u53e3\u5b50|\u9ed1\u6237|\u7f51\u8d37|\u501f\u94b1|\u501f\u8d37|\u5c0f\u989d\u8d37|\u501f\u6b3e|\u968f\u501f\u968f\u8fd8|\u5f81\u4fe1|\u62b5\u62bc|\u62c5\u4fdd|\u624b\u673a\u8d37\u6b3e|\u4e0b\u6b3e\u53e3\u5b50|\u4e0b\u6b3e\u5feb|\u725B\u725B-|\u5A31\u4E50-|\u7EA2\u62D0\u5F2F-/.test(document.querySelector('meta[name="keywords"]').getAttribute('content')+document.title)||tcid==10){
+            let domain = window.origin;
+			if(currurl.indexOf('/app/')!=-1){//app
+				page404();
+			}else if(currurl.indexOf('/game/')!=-1){
+				page404();
+			}else if(currurl.indexOf('/zt/')!=-1){
+				page404();
+			}else{
+				$.get("https://pi.9k9k.com/location/get52pkcall/?ac=getposcall",{acd:'get'},function(d){
+					if (d.recomdCity) {
+						if($(".and_show").length>0){
+							$(".and_show").remove();
+							$(".ios_show").remove();
+							$(".yuyue_show").remove();
+							$(".no_down_show").show();
+						}else{
+							$('button').unbind().removeAttr('onclick').removeClass('down').addClass('pull').html("暂无资源下载");
+							$('.down_address').remove();
+						}
+					}
+				},"jsonp");
+			}
+        }else{
+			/***$.get("https://pi.9k9k.com/location/getdown/?ac=getposcall",{acd:'get'},function(d){
+				$('button').unbind().removeAttr('onclick').removeClass('down').addClass('pull').html("暂无资源下载");
+				$('.down_address').remove();
+            },"jsonp");***/
+		}
+    }
+
